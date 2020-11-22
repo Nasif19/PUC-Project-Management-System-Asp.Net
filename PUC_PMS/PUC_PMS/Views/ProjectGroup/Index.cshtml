@@ -1,0 +1,704 @@
+﻿@using PUC_PMS.Models
+@model PUC_PMS.Models.ProjectGroup
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- end: page -->
+<section role="main" class="content-body">
+    <header class="page-header">
+        <h2>Manage Group</h2>
+
+        <div class="right-wrapper pull-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="@Url.Action("Index","ProjectGroup")">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Manage  Groups</span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right">@*<i class="fa fa-chevron-left"></i>*@</a>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-md-8">
+
+            <!--Instruction-->
+            <section class="panel" id="groupInstruction">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fas fa-caret-down"></a>
+                        <a href="#" class="fas fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">Instruction Is here</h2>
+
+                </header>
+                <div class="panel-body" style="background:#ffffcc;">
+                    <p>Customize the graphs as much as you want, there are so many options and features to display information using JSOFT Admin Template.</p>
+                </div>
+                <label align="center"></label>
+            </section>
+
+            <!--Create Groups Start-->
+            <section class="panel" id="createGroup" style="display:none;">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Create Groups</h2>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered" id="formCreate" @*method="post"*@>
+                        <!--DropDown-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Program</label>
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(d => d.TblProgramId, new SelectList(ViewBag.Programs, "Value", "Text"), "-- Select Program --", new { @class = "form-control populate", @id = "cg_program" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblProgramId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Batch</label>
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(d => d.BatchName, new SelectList(string.Empty, "Value", "Text"), "-- Select Batch --", new { @class = "form-control populate", @id = "cg_batch" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.BatchName)
+
+                            </div>
+                        </div>
+                        <!--TextBox-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Number Of Groups</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(t => t.NumberOfGroup, null, new { @class = "form-control mb-md", @id = "totalGroup" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.NumberOfGroup)
+                                @*<input class="form-control mb-md" type="text" placeholder="Number">*@
+                            </div>
+                        </div>
+                        <!--Button-->
+                        <center><input type="button" id="create" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Create"></center>
+                        @*<center><button id="create" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary">Create</button></center>*@
+                        <hr class="separator" />
+
+                        <label id="response"></label>
+                    </form>
+                </div>
+            </section>
+            <!--Create Groups End-->
+            <!--Manage Supervisor Start-->
+            <section class="panel" id="manageSupervisors" style="display:none;">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">Manage Supervisors</h2>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered">
+
+                        <!--Read Only TextBox-->
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputReadOnly">Id</label>
+                            <div class="col-md-6">
+
+                                @Html.TextBoxFor(t => t.TblProjectGroupId, null, new { @class = "form-control", @id = "msupGrpId", @readonly = "readonly" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblProjectGroupId)
+
+                            </div>
+                        </div>
+
+                        <!--Read Only TextBox-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputReadOnly">Group Name</label>
+                            <div class="col-md-6">
+                                <input type="text" id="supervisorGrpName" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Supervisor</label>
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(d => d.TblSupervisorId, new SelectList(ViewBag.Supervisors, "Value", "Text"), "-- Select Supervisor --", new { @class = "form-control populate", @id = "supervisor" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblSupervisorId)
+                            </div>
+                        </div>
+                        <hr class="separator" />
+                        <center><input type="button" id="addSupervisor" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Add"></center>
+                        <hr class="separator" />
+                        @* Supervisor Table *@
+                        <table class="table table-bordered table-striped mb-none" id="supervisorTbl"></table>
+                    </form>
+                </div>
+            </section>
+            <!--Manage Supervisor Ends-->
+            <!--Manage student Start-->
+            <section class="panel" id="manageStudents" style="display:none;">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Manage Students</h2>
+
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered">
+
+                        <!--Read Only TextBox-->
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputReadOnly">Id</label>
+                            <div class="col-md-6">
+                                @*<input type="text" value="27" id="inputReadOnly" class="form-control" readonly="readonly">*@
+
+                                @Html.TextBoxFor(t => t.TblProjectGroupId, null, new { @class = "form-control", @id = "mstdGrpId", @readonly = "readonly" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblProjectGroupId)
+
+                            </div>
+                        </div>
+
+                        <!--Read Only TextBox-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputReadOnly">Group Name</label>
+                            <div class="col-md-6">
+                                <input type="text" id="studentGrpName" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <!--All Batch-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Batch</label>
+                            <div class="col-md-6">
+
+                                @Html.DropDownListFor(d => d.BatchName, new SelectList(string.Empty, "Value", "Text"), "-- Select Batch --", new { @class = "form-control populate", @id = "std_batch" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.BatchName)
+                            </div>
+                        </div>
+
+                        <!--DropDown-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Student</label>
+                            <div class="col-md-6">
+
+                                @Html.DropDownListFor(d => d.TblStudentId, new SelectList(string.Empty, "Value", "Text"), "-- Select Student --", new { @class = "form-control populate", @id = "student" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblStudentId)
+                            </div>
+                        </div>
+
+                        <hr class="separator" />
+                        <center><input type="button" id="addstudent" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Add"></center>
+                        <!--Student Table-->
+                        <hr class="separator" />
+                        <table class="table table-bordered table-striped mb-none" id="studentTbl"></table>
+                    </form>
+                </div>
+            </section>
+            <!--Manage Student Ends-->
+        </div>
+
+        <!--Manage Group Start-->
+        <div class="col-md-4">
+            <section class="panel" id="manageGroup">
+
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Manage Groups</h2>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <h5 align="right" style="margin-right:-25px"><label> Create Groups</label></h5>
+                            </div>
+                            <div class="col-sm-3" align="right">
+                                <a href="#" title="Create Groups" style='padding-left:5px; font-size:10px;' onclick="createGroup()">
+                                    <button type="button" class="btn btn-primary"><i class="fas fa-plus-square"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                        <!--DropDown-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Program</label>
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(d => d.TblProgramId, new SelectList(ViewBag.Programs, "Value", "Text"), "-- Select Program --", new { @class = "form-control populate", @id = "mg_program" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.TblProgramId)
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputSuccess">Batch</label>
+                            <div class="col-md-9">
+
+                                @Html.DropDownListFor(d => d.BatchName, new SelectList(string.Empty, "Value", "Text"), "-- Select Batch --", new { @class = "form-control populate", @id = "mg_batch" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.BatchName)
+                            </div>
+                        </div>
+                        <hr class="separator" />
+
+                        @* Group Table *@
+                        <table class="table table-bordered table-striped mb-none" id="grouptbl"></table>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!--Manage Group End-->
+    </div>
+</section>
+
+<script>
+
+    $(document).ready(function () {
+
+        //Create Group
+        $("#cg_program").change(function () {
+
+            LoadBatch("cg_program", "cg_batch");
+
+        })
+
+        //Save groups
+        $("#create").click(function () {
+            document.getElementById("load").style.display = "block";
+            var programId = $("#cg_program").val();
+            var batch = $("#cg_batch").val();
+
+            if (programId > 0 & batch > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '/ProjectGroup/Index',
+                    method: 'post',
+                    data: {
+                        TblProgramId: programId,
+                        BatchName: batch,
+                        NumberOfGroup: $("#totalGroup").val(),
+                        submitButton: $("#create").val()
+                    },
+                    success: function (data) {
+
+
+                        //LoadGroups($("#cg_program").val(), $("#cg_batch").val());
+                        //alert("Save Successful.!");
+                        Swal.fire(
+                            'Saved!',
+                            'Groups has been Saved.',
+                            'success'
+                        )
+                        $("#mg_program").val(programId);
+                        $.get("/ProjectGroup/GetBatchList", { programId: $("#mg_program").val() }, function (data) {
+                            $("#mg_batch").empty();
+                            $("#mg_batch").append("<option value='" + "-1" + "'>" + "--Select Batch--" + "</option>")
+                            $.each(data, function (index, row) {
+                                $("#mg_batch").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+                            });
+                            $("#mg_batch").val($("#cg_batch").val());
+                            LoadGroups($("#cg_program").val(), $("#cg_batch").val());
+                        });
+
+                        $("#totalGroup").val(null);
+
+                        //LoadBatch("mg_program", "mg_batch");
+                        //$("#mg_batch").val(batch);
+                    },
+                    error: function (err) {
+                        Swal.fire(
+                            'Failed.!',
+                            '' + err,
+                            'error'
+                        )
+                    }
+                });
+            }
+            else {
+                //alert("Please Select Valid Data.!")
+                Swal.fire(
+                    'Failed.!',
+                    'Please Fill With Valid Data.!',
+                    'error'
+                )
+            }
+            document.getElementById("load").style.display = "none";
+        })
+
+        //Manage Group
+        $("#mg_program").change(function () {
+
+            $("#grouptbl").empty();
+            LoadBatch("mg_program", "mg_batch");
+            LoadBatch("mg_program", "std_batch");
+        })
+
+        //All groups in table
+        $("#mg_batch").change(function () {
+
+            $("#cg_batch").val($("#mg_batch").val());
+            LoadGroups($("#mg_program").val(), $("#mg_batch").val());
+
+        })
+
+        //Std manage batch
+        $("#std_batch").change(function () {
+            $.get("/ProjectGroup/GetStudentsForDropDown", { programId: $("#mg_program").val(), batch: $("#std_batch").val() }, function (data) {
+                $("#student").empty();
+                $("#student").append("<option value='" + "-1" + "'>" + "-- Select Student --" + "</option>")
+
+                $.each(data, function (index, row) {
+                    $("#student").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+
+                });
+            });
+
+        })
+        //Save Supervisors
+        $("#addSupervisor").click(function () {
+            SaveSupervisorAndStudent("msupGrpId", "supervisor", "AddSupervisor");
+            LoadSupervisors($("#msupGrpId").val())
+            $("#supervisor").val('');
+        })
+
+        //Save Student
+        $("#addstudent").click(function () {
+            SaveSupervisorAndStudent("mstdGrpId", "student", "Addstudent");
+            LoadStudents($("#mstdGrpId").val());
+            LoadStudentsDD();
+            $("#student").val('-1');
+        })
+
+    });
+
+
+
+    function createGroup() {
+        document.getElementById("load").style.display = "block";
+        $("#cg_program").val($("#mg_program").val());
+        //load cg_batch from cg_program
+        $.get("/ProjectGroup/GetBatchList", { programId: $("#cg_program").val() }, function (data) {
+            $("#cg_batch").empty();
+            $("#cg_batch").append("<option value='" + "-1" + "'>" + "--Select Batch--" + "</option>")
+            $.each(data, function (index, row) {
+                $("#cg_batch").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+            $("#cg_batch").val($("#mg_batch").val());
+        });
+
+        $("#groupInstruction").hide();
+        $("#createGroup").slideDown();
+        //$("#manageGroup").hide();
+        $("#manageSupervisors").hide();
+        $("#manageStudents").hide();
+        document.getElementById("load").style.display = "none";
+    }
+    function manageGroup() {
+        $("#groupInstruction").hide();
+        $("#createGroup").hide();
+        //$("#manageGroup").slideDown();
+        $("#manageSupervisors").hide();
+        $("#manageStudents").hide();
+    }
+    function manageSupervisors(id, name) {
+        $("#groupInstruction").hide();
+        $("#createGroup").hide();
+        $("#manageSupervisors").slideDown();
+        $("#manageStudents").hide();
+        $("#msupGrpId").val(id);
+        $("#supervisor").val('')
+        $("#supervisorGrpName").val(name);
+        LoadSupervisors(id)
+    }
+    function manageStudents(id, name) {
+        document.getElementById("load").style.display = "block";
+        $("#groupInstruction").hide();
+        $("#createGroup").hide();
+        $("#manageSupervisors").hide();
+        $("#manageStudents").slideDown();
+
+        $("#mstdGrpId").val(id);
+        $("#studentGrpName").val(name);
+        LoadStudentsDD();
+        $("#std_batch").val($("#mg_batch").val());
+        //Load Students
+        //$.get("/ProjectGroup/GetStudentsForDropDown", { programId: $("#mg_program").val(), batch: $("#mg_batch").val() }, function (data) {
+        //    $("#student").empty();
+        //    $("#student").append("<option value='" + "-1" + "'>" + "-- Select Student --" + "</option>")
+
+        //    $.each(data, function (index, row) {
+        //        $("#student").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+
+        //    });
+        //});
+
+        LoadStudents(id);
+        document.getElementById("load").style.display = "none";
+    }
+    function reset() {
+        $("#groupInstruction").slideDown();
+        $("#createGroup").hide();
+        $("#manageGroup").hide();
+        $("#manageSupervisors").hide();
+        $("#manageStudents").hide();
+    }
+    function Instruction() {
+        $("#groupInstruction").slideDown();
+        $("#manageSupervisors").hide();
+        $("#manageStudents").hide();
+    }
+
+    //Load Students
+    function LoadStudentsDD() {
+        $.get("/ProjectGroup/GetStudentsForDropDown", { programId: $("#mg_program").val(), batch: $("#mg_batch").val() }, function (data) {
+            $("#student").empty();
+            $("#student").append("<option value='" + "-1" + "'>" + "-- Select Student --" + "</option>")
+
+            $.each(data, function (index, row) {
+                $("#student").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+
+            });
+        });
+    }
+
+
+    //Load Table of Groups
+    function LoadGroups(programId, batch) {
+        document.getElementById("load").style.display = "block";
+        $.ajax({
+            type: "POST",
+            url: '/ProjectGroup/GetGroupList',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                programId: programId,
+                batch: batch
+            },
+            success: function (data) {
+                $("#grouptbl").empty();
+                $("#grouptbl").append('<thead class="font">' + '<tr>' +
+                    '<td>' + 'Group Name' + '</td>' +
+                    '<td>' + 'Action' + '</td>' +
+                    '</tr>' + '</thead>');
+                $.each(data, function (index, row) {
+                    $("#grouptbl").append('<tbody class="font">' + '<tr>' +
+                        '<td>' + row.ProjectGroupName + '</td>' +
+                        '<td>' + '<a href="#" title="Manage Supervisors" onclick = "manageSupervisors( ' + row.Id + ',\'' + row.ProjectGroupName + '\')"> <i class="fas fa-user-tie "></i> </a>' + ' &nbsp;' + '<a href = "#" title = "Manage Students" onclick = "manageStudents( ' + row.Id + ',\'' + row.ProjectGroupName + '\')" > <i class="fas fa-user-graduate"></i> </a >' + '</td>' +
+                        '</tr>' + '</tbody>');
+                });
+
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Load Batch
+    function LoadBatch(p_id, b_id) {
+        document.getElementById("load").style.display = "block";
+        $.get("/ProjectGroup/GetBatchList", { programId: $("#" + p_id).val() }, function (data) {
+            $("#" + b_id).empty();
+            $("#" + b_id).append("<option value='" + "-1" + "'>" + "-- Select Batch --" + "</option>")
+            $.each(data, function (index, row) {
+                $("#" + b_id).append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+        });
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Save Student And Supervisors
+    function SaveSupervisorAndStudent(groupId, member, btnVal) {
+        document.getElementById("load").style.display = "block";
+        var projectGroupId = $("#" + groupId).val();
+        var memberId = $("#" + member).val();
+
+        if (projectGroupId > 0 & memberId > 0) {
+            $.ajax({
+                type: "POST",
+                url: '/ProjectGroup/Index',
+                method: 'post',
+                data: {
+                    SupportId: memberId,
+                    TblProjectGroupId: projectGroupId,
+                    submitButton: btnVal
+                },
+                success: function (data) {
+
+                    Swal.fire(
+                        'Saved!',
+                        member + ' has been Saved.',
+                        'success'
+                    )
+
+                },
+                error: function (err) {
+                    Swal.fire(
+                        'Failed.!',
+                        '' + err,
+                        'error'
+                    )
+                }
+            });
+        }
+        else {
+            Swal.fire(
+                'Failed.!',
+                'Please Fill With Valid Data.!',
+                'error'
+            )
+
+        }
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Load Supervisor table
+    function LoadSupervisors(groupId) {
+        document.getElementById("load").style.display = "block";
+        $.ajax({
+            type: "POST",
+            url: '/ProjectGroup/GetSupervisorAndStudentList',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                groupId: groupId,
+                type: "supervisor"
+            },
+            success: function (data) {
+                $("#supervisorTbl").empty();
+                $("#supervisorTbl").append('<thead class="font">' + '<tr>' +
+                    '<td>' + ' Name' + '</td>' +
+                    '<td>' + 'Action' + '</td>' +
+                    '</tr>' + '</thead>');
+                $.each(data, function (index, row) {
+
+                    $("#supervisorTbl").append('<tbody class="font">' + '<tr>' +
+                        '<td>' + row.Name + '</td>' +
+                        '<td>' + '<a  href="#"  title="Remove Supervisor" onclick="RemoveSupervisor(' + row.Id + ')"><i class="fas fa-trash-alt"></i></a>' + '</td>' +
+                        '</tr>' + '</tbody>');
+                });
+
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Load Student table
+    function LoadStudents(groupId) {
+        document.getElementById("load").style.display = "block";
+        $.ajax({
+            type: "POST",
+            url: '/ProjectGroup/GetSupervisorAndStudentList',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                groupId: groupId,
+                type: "student"
+            },
+            success: function (data) {
+                $("#studentTbl").empty();
+                $("#studentTbl").append('<thead class="font">' + '<tr>' +
+                    '<td>' + ' Name' + '</td>' +
+                    '<td>' + 'Action' + '</td>' +
+                    '</tr>' + '</thead>');
+                $.each(data, function (index, row) {
+
+                    $("#studentTbl").append('<tbody class="font">' + '<tr>' +
+                        '<td>' + row.Name + '</td>' +
+                        '<td>' + '<a href="#"  title="Remove Student ' + row.Id + '" onclick="RemoveStudent(' + row.Id + ')"><i class="fas fa-trash-alt"></i></a>' + '</td>' +
+                        '</tr>' + '</tbody>');
+                });
+
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Delete Supervisor
+    function RemoveSupervisor(id) {
+        document.getElementById("load").style.display = "block";
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: '/ProjectGroup/Index',
+                    method: 'post',
+                    data: {
+                        Id: id,
+                        submitButton: "RemoveSupervisor"
+                    },
+                    success: function (data) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Supervisor has been deleted.',
+                            'success'
+                        )
+                        LoadSupervisors($("#msupGrpId").val())
+                    }
+                });
+
+            }
+        })
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Delete Student
+    function RemoveStudent(id) {
+        document.getElementById("load").style.display = "block";
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: '/ProjectGroup/Index',
+                    method: 'post',
+                    data: {
+                        Id: id,
+                        submitButton: "RemoveStudent"
+                    },
+                    success: function (data) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Student has been deleted.',
+                            'success'
+                        )
+                        LoadStudentsDD();
+                        LoadStudents($("#mstdGrpId").val());
+                    }
+                });
+
+            }
+        })
+        document.getElementById("load").style.display = "none";
+    }
+
+    Instruction();
+</script>
+\

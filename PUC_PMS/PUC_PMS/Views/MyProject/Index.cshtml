@@ -1,0 +1,326 @@
+﻿@using PUC_PMS.Models
+@model PUC_PMS.Models.ProjectList
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Student.cshtml";
+}
+
+<!--For MyProject-->
+
+<section role="main" class="content-body">
+    <header class="page-header">
+        <h2>Project</h2>
+
+        <div class="right-wrapper pull-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="@Url.Action("Index","MyProject")">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Forms</span></li>
+                <li><span>Basic</span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    <!-- start: page -->
+    <div class="panel-body col-md-12" id="error_panel" style="background:#ffffcc; margin:auto; display:none; height:180px;" align="center">
+        <h2 id="error"></h2>
+    </div>
+    <div class="row" id="full_panel">
+        <!--Instruction-->
+        <div class="col-lg-12" style="margin-top:-30px">
+            <section class="panel" id="groupInstruction">
+
+                <div class="panel-body" style="background:#ffffcc; margin:auto" align="center">
+                    <div class="row">
+                        <div class="col-md-6"> <label><b>Group Name: &nbsp;</b></label> <label id="grp_name" style="padding-right:100px"></label></div>
+                        <div class="col-md-6"> <label><b>Project Name:&nbsp;</b></label> <label id="project_name" style="padding-right:100px"></label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> <label><b>Supervisor Name: &nbsp; </b></label> <label id="supervisor_name" style="padding-right:100px"></label></div>
+                        <div class="col-md-6"> <label><b>Status: &nbsp; </b></label> <label id="status" style="padding-right:100px"></label></div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+
+        <div class="col-lg-12">
+            <section class="panel" id="uploadFiles" style="display:block">
+                @*<header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <h2 class="panel-title">Upload Project Files</h2>
+                </header>*@
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered" id="saveProject">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Proposal Slide</label>
+                            <div class="col-sm-9">
+                                <select class="form-control populate" id="files">
+                                    <option value="-1">--Select--</option>
+                                    <option value="1">Proposal Files</option>
+                                    <option value="2">Project Files</option>
+                                    <option value="3">Final Files</option>
+                                </select>
+                            </div>
+                            @{
+                                if (ViewBag.msg != null)
+                                {
+                                    <center><label style="padding-top:10px;"><b>@ViewBag.msg</b></label></center>
+                                }
+                            }
+                            <label></label>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-12">
+            <section class="panel"  id="proposal_slide" style="display:none">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <h2 class="panel-title">Upload Project Files</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="panel-body">
+                        @using (Html.BeginForm("Index", "MyProject", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-bordered" }))
+                        {
+                            @*<form class="form-horizontal form-bordered" id="saveProject">*@
+                            <div class="form-group" style="display:none">
+                                @Html.TextBoxFor(m => m.Status, new { @type = "text", @id = "status_proposal" })
+                                @Html.TextBoxFor(m => m.Id, new { @type = "text"})
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="inputDefault">Proposal Slide</label>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(m => m.Slide, new { type = "file", @class = "form-control file validate[required]" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="proposal_slide">
+                                <label class="col-md-3 control-label" for="inputDefault">Proposal Report</label>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(m => m.Report, new { type = "file", @class = "form-control file validate[required]" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="proposal_slide">
+                                @*<div class="col-sm-5">*@
+                                    <center> <input type="submit" id="create" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Save"> </center>
+                                @*</div>*@
+                            </div>
+                            @*</form>*@
+                        }
+                        <hr class="separator" />
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-12">
+            <section class="panel" id="groupInstruction">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fas fa-caret-down"></a>
+                        @*<a href="#" class="fas fa-times"></a>*@
+                    </div>
+
+                    <h2 class="panel-title">Comments:</h2>
+
+                </header>
+                <div class="panel-body" align="left">
+                    <form class="form-bordered" id="saveProject">
+                        @*<div class="form-group">*@
+                        <div class="col-md-1" style="padding-top:20px">
+                            <label control-label" for="inputDefault"><b>Comment:</b></label>
+                        </div>
+                        <div class="col-md-5">
+                            <textarea class="form-control" rows="3" id="new_comment" data-plugin-textarea-autosize></textarea>
+                        </div>
+                        <div class="col-md-1" style="padding-top:20px">
+                            <button type="button" id="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        @*</div>*@
+                    </form>
+                </div>
+
+                <!--Commens Section-->
+                <div class="panel-body" id="comment">
+
+                </div>
+
+            </section>
+        </div>
+    </div>
+    <!-- end: page -->
+</section>
+<script>
+    $(document).ready(function () {
+
+        $("#files").change(function () {
+            document.getElementById("load").style.display = "block";
+            $("#proposal_slide").slideDown();
+            var f = $('#files').val();
+            if (f == 1) {
+                $("#status_proposal").val(f);
+            }
+            else if (f == 2) {
+                $("#status_proposal").val(f);
+            }
+            else if (f == 3) {
+                $("#status_proposal").val(f);
+            }
+            else {
+                $("#proposal_slide").hide();
+            }
+            document.getElementById("load").style.display = "none";
+            
+        })
+
+        //Save Comment
+        $("#submit").click(function () {
+            document.getElementById("load").style.display = "block";
+            var groupId = $("#p_id").val();
+            var comment = $("#new_comment").val();
+            var supportName = $("#userName").text();
+            if (groupId > 0 & comment != '') {
+                $.ajax({
+                    type: "POST",
+                    url: '/MyProject/NewComment',
+                    method: 'post',
+                    data: {
+                        grpId: groupId,
+                        comment: comment,
+                        supportName: supportName
+                    },
+                    success: function (data) {
+                        LoadComments();
+                        $("#new_comment").val(null)
+                        Swal.fire(
+                            'Saved!',
+                            'Comment has been Made.',
+                            'success'
+                        )
+                    },
+                    error: function (err) {
+                        Swal.fire(
+                            'Failed.!',
+                            '' + err,
+                            'error'
+                        )
+                    }
+                });
+            }
+            else {
+                Swal.fire(
+                    'Failed.!',
+                    'Please Fill With Valid Data.!',
+                    'error'
+                )
+            }
+            document.getElementById("load").style.display = "none";
+        })
+        $('#Save').prop('disabled', true);  
+        $("#Slide").change(function () {
+            // Get uploaded file extension  
+            var extension = $(this).val().split('.').pop().toLowerCase();
+            // Create array with the files extensions that we wish to upload  
+            var validFileExtensions = ['ppt', 'pptx', 'pdf'];
+            //Check file extension in the array.if -1 that means the file extension is not in the list.  
+            if ($.inArray(extension, validFileExtensions) == -1) {
+                alert("Sorry!! Upload only 'ppt', 'pptx', 'pdf' file")
+                // Clear fileuload control selected file  
+                $(this).replaceWith($(this).val('').clone(true));
+                //Disable Submit Button  
+                $('#Save').prop('disabled', true);
+            } else {
+                // Check and restrict the file size to 128 KB.  
+                if ($(this).get(0).files[0].size > (131072)) {
+                    alert("Sorry!! Max allowed file size is 128 kb");
+                    // Clear fileuload control selected file  
+                    $(this).replaceWith($(this).val('').clone(true));
+                    //Disable Submit Button  
+                    $('#Save').prop('disabled', true);
+                } else {
+                    //Enable Submit Button  
+                    $('#Save').prop('disabled', false);
+                }
+            }
+        });
+        $("#Save").click(function () {
+            debugger
+            if ($("#Slide").val() = null || $("#Report").val() || $("#Status").val() || $("#Id").val() ) {
+                alert("Please fill out required fields(*)");
+                return false;
+            }
+            return true;
+        });  
+    })
+    
+    function Timeline() {
+        document.getElementById("load").style.display = "block";
+        
+            $.ajax({
+                type: "POST",
+                url: '/MyProject/Timeline',
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    //Id: id
+                },
+                success: function (data) {
+
+                    if (data.Status != 'Running' & data.Status != 'Completed') {
+                        document.getElementById("error").innerHTML += data.Status;
+                        $("#error_panel").slideDown();
+                        $("#full_panel").hide();
+                    }
+
+                    else {
+                        document.getElementById("grp_name").innerHTML += data.GroupName;
+                        document.getElementById("project_name").innerHTML += data.ProjectTite;
+                        document.getElementById("supervisor_name").innerHTML += data.SupervisorName;
+                        document.getElementById("status").innerHTML += data.Status;
+                        $("#Id").val(data.Id);
+                    }
+                    
+                }
+            });
+            document.getElementById("load").style.display = "none";
+    }
+    //Load ProjectList
+    function LoadComments() {
+        document.getElementById("load").style.display = "block";
+        var str = "";
+        $.ajax({
+            type: "POST",
+            url: '/MyProject/GetComments',
+            method: 'post',
+            dataType: 'json',
+            data: {
+              
+            },
+            success: function (data) {
+                $("#comment").empty();
+                $.each(data, function (index, row) {
+
+                    str += '<div class="col-md-12"><label><b >' + row.GroupName + ': &nbsp; </b></label> <label style="padding-right:100px">' + row.Comment + '</label></div> <br />'
+                });
+                $("#comment").append(str);
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+    Timeline();
+    LoadComments();
+</script>

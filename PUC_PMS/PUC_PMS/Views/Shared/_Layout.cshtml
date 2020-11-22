@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>PUC PMS</title>
+    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
+    <meta name="author" content="JSOFT.net">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/assets/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/assets/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="~/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+
+    <!-- Specific Page Vendor CSS -->
+    @*<link rel="stylesheet" href="~/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
+        <link rel="stylesheet" href="~/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+        <link rel="stylesheet" href="~/assets/vendor/morris/morris.css" />
+        <link rel="stylesheet" href="~/assets/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css" />
+        <link rel="stylesheet" href="~/assets/vendor/select2/select2.css" />*@
+    @*<link rel="stylesheet" href="~/assets/vendor/jquery-datatables-bs3/~/assets/css/datatables.css" />*@
+    @* NEW *@
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="~/assets/stylesheets/jquery-ui.css" />
+    <link rel="stylesheet" href="/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
+    <link rel="stylesheet" href="/assets/vendor/select2/select2.css" />
+    <link rel="stylesheet" href="/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="/assets/vendor/dropzone/css/basic.css" />
+    <link rel="stylesheet" href="/assets/vendor/dropzone/css/dropzone.css" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" />
+    <link rel="stylesheet" href="/assets/vendor/summernote/summernote.css" />
+    <link rel="stylesheet" href="/assets/vendor/summernote/summernote-bs3.css" />
+    <link rel="stylesheet" href="/assets/vendor/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="/assets/vendor/codemirror/theme/monokai.css" />
+
+    <script src="/assets/vendor/jquery/jquery.js"></script>
+    <script src="/assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
+
+
+    @* end *@
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="~/assets/stylesheets/theme.css" />
+
+    <!-- Skin CSS -->
+    <link rel="stylesheet" href="~/assets/stylesheets/skins/default.css" />
+
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="~/assets/stylesheets/theme-custom.css">
+    <link href="~/assets/stylesheets/sweetalert2.min.css" rel="stylesheet" />
+    <!-- Head Libs -->
+    <script src="~/assets/vendor/modernizr/modernizr.js"></script>
+
+    <!--Font Awesome Icon-->
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="~/Content/Chosen/jquery-customselect.css" rel="stylesheet" />
+
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">*@
+
+    @*<script src="~/Scripts/jquery-ui.js"></script>
+        <script src="~/Scripts/jquery-1.12.4.js"></script>*@
+
+    @*<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"/>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>*@
+
+</head>
+<body>
+
+    <section class="body">
+        <div class="loader">
+            @*<img src="loading.gif" alt="Loading..." />*@
+            @*<img src="~/Content/loader.gif" alt="Loading..." />*@
+            <img src="~/Content/tenor.gif" style="height:500px; width:500px" align="middle" alt="Loading..." />
+        </div>
+        <!-- start: header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo" >
+                    <h4><b>PUC Project Management System</b></h4>
+                </div>
+                @*<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>*@
+            </div>
+
+            <!-- start: search & user box -->
+            <div class="header-right">
+                <span class="separator"></span>
+
+                <div id="userbox" class="userbox">
+                    <a href="#" data-toggle="dropdown">
+                        <figure class="profile-picture">
+                            <img src="~/assets/images/noimage_person.png" class="img-circle" />
+                        </figure>
+                        <div class="profile-info">
+                            <span id="userName" class="name">@Session["UserName"]</span>
+                        </div>
+                    </a>
+                    <a role="menuitem" tabindex="-1" href="@Url.Action("Logout","Login")"><i class="fa fa-power-off"></i> Logout</a>
+                   
+                </div>
+            </div>
+            <!-- end: search & user box -->
+        </header>
+        <!-- end: header -->
+
+        <div style="margin-top:-50px" class="inner-wrapper">
+            <!-- start: sidebar -->
+            <aside id="sidebar-left" class="sidebar-left">
+
+                <div class="sidebar-header">
+                    <div class="sidebar-title" style="color:cornflowerblue">
+                        Teacher's Panel
+                    </div>
+                    <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                      <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
+                    </div>
+                </div>
+
+                <div class="nano">
+                    <div class="nano-content">
+                        <nav id="menu" class="nav-main" role="navigation">
+                            <ul class="nav nav-main">
+
+                                <!-- Dashboard -->
+                                <li class="nav-active">
+                                    <a href="@Url.Action("Index","ProjectGroup")">
+                                        <i class="fas fa-users-cog"></i>
+                                        <span>Group Management</span>
+                                    </a>
+                                </li>
+
+                                <!--Groups-->
+                                <li class="nav-active">
+                                    <a href="@Url.Action("Index","ProjectList")">
+                                        <i class="fas fa-swatchbook"></i>
+                                        <span>Project Management</span>
+                                    </a>
+
+                                </li>
+                                <!--Request-->
+                                <li class="nav-active">
+                                    <a href="@Url.Action("Index","ProjectRequest")">
+                                        <i class="fas fa-layer-group"></i>
+                                        <span>Project Request</span>
+                                    </a>
+
+                                </li>
+                                <!--Report-->
+                                <li class="nav-active">
+                                    <a href="@Url.Action("Index","Report")">
+                                        <i class="fas fa-layer-group"></i>
+                                        <span>Report</span>
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            </aside>
+            <!-- end: sidebar -->
+            @*<section role="main" class="content-body">*@
+            <div id="load" style="display:none">
+                @*<img src="loading.gif" alt="Loading..." />*@
+                @*<img src="~/Content/loader.gif" alt="Loading..." />*@
+                <img src="~/Content/tenor.gif" style="height:500px; width:500px" align="middle" alt="Loading..." />
+            </div>
+            @RenderBody()
+            @*</section>*@
+        </div>
+
+
+    </section>
+
+    <!-- Vendor -->
+    @*<script src="~/assets/vendor/jquery/jquery.js"></script>*@
+    <script src="~/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="~/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="~/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+    <!-- Specific Page Vendor -->
+    @*<script src="~/assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>*@
+    <script src="~/assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+    <script src="~/assets/vendor/jquery-appear/jquery.appear.js"></script>
+    <script src="~/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+    <script src="~/assets/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.js"></script>
+    <script src="~/assets/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.pie.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.categories.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.resize.js"></script>
+    <script src="~/assets/vendor/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="~/assets/vendor/raphael/raphael.js"></script>
+    <script src="~/assets/vendor/morris/morris.js"></script>
+    <script src="~/assets/vendor/gauge/gauge.js"></script>
+    <script src="~/assets/vendor/snap-svg/snap.svg.js"></script>
+    <script src="~/assets/vendor/liquid-meter/liquid.meter.js"></script>
+    <script src="~/assets/vendor/jqvmap/jquery.vmap.js"></script>
+    <script src="~/assets/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>
+    <script src="~/assets/vendor/jquery-autosize/jquery.autosize.js"></script>
+    <script src="~/assets/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+    <script src="~/assets/vendor/select2/select2.js"></script>
+
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="~/assets/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="~/assets/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="~/assets/javascripts/theme.init.js"></script>
+    @*<script src="assets/javascripts/forms/examples.advanced.form.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Examples -->
+    @*<script src="~/assets/javascripts/dashboard/examples.dashboard.js"></script>*@
+    <script src="~/Scripts/sweetalert2@9.js"></script>
+    <script src="~/Scripts/sweetalert2@8.js"></script>
+    @*<script src="~/Scripts/jquery-ui.js"></script>
+        <script src="~/Scripts/jquery-1.12.4.js"></script>*@
+
+
+    <!--hsadgfa-->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+<script>
+    
+    window.addEventListener("load", function () {
+        const loader = document.querySelector(".loader");
+        loader.className += " hidden"; // class "loader hidden"
+    });
+</script>

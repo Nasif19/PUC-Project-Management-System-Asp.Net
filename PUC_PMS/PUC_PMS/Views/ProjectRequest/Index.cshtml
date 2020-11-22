@@ -1,0 +1,532 @@
+﻿@using PUC_PMS.Models
+@model PUC_PMS.Models.ProjectList
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Project Request-->
+<!-- end: page -->
+<section role="main" class="content-body">
+    <header class="page-header">
+        <h2>Manage Group</h2>
+
+        <div class="right-wrapper pull-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="@Url.Action("Index", "ProjectRequest")">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Manage  Groups</span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"></a>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-7">
+                <!--Instruction-->
+                <section class="panel" id="groupInstruction">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fas fa-caret-down"></a>
+                            <a href="#" class="fas fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">Instruction Is here</h2>
+                    </header>
+                    <div class="panel-body" style="background:#ffffcc;">
+                        <p>Customize the graphs as much as you want, there are so many options and features to display information using JSOFT Admin Template.</p>
+                    </div>
+                    <label align="center"></label>
+                </section>
+
+                <!--Request List Start-->
+                <section class="panel" id="requestList" style="display:none">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            @*<a href="#" class="fa fa-times"></a>*@
+                        </div>
+                        <h2 class="panel-title">Request List</h2>
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal form-bordered" method="post">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped mb-none" id="tblProject" data-swf-path="assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                    <thead>
+                                        <tr>
+                                            <th>Project Title</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="gradeC">
+                                            <td>PUC PMS</td>
+                                            <td class="center hidden-phone">
+                                                &nbsp; <a onclick="ProjectDetails()" title="View" id="p_view"><i class="fas fa-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <!--Request List End-->
+            <!--Project List-->
+            <div class="col-md-5">
+                <section class="panel" id="projectGroup">
+
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            @*<a href="#" class="fa fa-times"></a>*@
+                        </div>
+                        <h2 class="panel-title">Project Group</h2>
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal form-bordered" method="post">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped mb-none" id="tblProject" data-swf-path="assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Groups</th>
+                                            <th>Total Request</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            if (ViewBag.ProjectGroup != null)
+                                            {
+                                                int i = 1;
+
+                                                foreach (ProjectList projectList in ViewBag.ProjectGroup)
+                                                {
+                                                    <tr class="gradeC">
+                                                        <td>@(i++)</td>
+                                                        <td>@projectList.GroupName</td>
+                                                        <td align="center">@projectList.Total</td>
+                                                        <td class="center hidden-phone">
+                                                             <a title="View" id="p_view" onclick="ProjectList(@projectList.Id)"> <i class="fas fa-eye"></i></a>
+                                                            &nbsp; <a title="Comments" id="comments" onclick="LoadComments(@projectList.Id)"> <i class="fas fa-comments"></i> </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <section class="panel" id="projectDetails" style="display:none">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <h2 class="panel-title" id="title"></h2>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered" id="saveProject">
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputDefault">Id</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="p_id" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Project Title</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="p_title">
+                            </div>
+                        </div>
+
+                        <!--Suggetion List -->
+                        <datalist id="datalist1">
+                            <option value="HTML,CSS,PHP,MySQL">
+                            <option value="HTML,CSS,PHP,Laravel,MySQL">
+                            <option value="HTML,CSS,,ASP.NET,MMSSQL">
+                        </datalist>
+                        <!--End-->
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Prerequisite Knowlede</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="p_knowledge" list="datalist1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="textareaAutosize">Short Description</label>
+                            <div class="col-md-5">
+                                <textarea class="form-control" rows="5" id="s_description" @*data-plugin-textarea-autosize*@></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Version</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="version">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Plartform</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="plartform" autocomplete="on">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputDefault">User Id</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="user_id" , readonly="readonly" value="@ViewBag.UserId">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputDefault">grp Id</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="grp_id" , readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Offer Status</label>
+                            <div class="col-md-5">
+                                @Html.DropDownListFor(d => d.OfferedBy, new SelectList(ViewBag.OfferedByList, "Value", "Text"), "--Select--", new { @class = "form-control populate", @id = "offer_status" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.OfferedBy)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5" align="center">
+                                <input type="button" id="btn_update" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Update">
+                                <input type="button" id="btn_accept" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Accept">
+                                <input type="button" id="btn_reject" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Reject">
+                                <input type="button" id="btn_completed" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Completed">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr class="separator" />
+            </section>
+        </div>
+
+        <div class="col-md-12" id="comment_panel" style="display:none">
+            <section class="panel" id="groupInstruction">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fas fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Comments:</h2>
+                </header>
+                <div class="panel-body" align="left">
+                    <form class="form-bordered" id="saveProject">
+                        <div class="col-md-1" style="padding-top:20px">
+                            <input type="text" class="form-control" id="gp_id" , readonly="readonly" style="display:none">
+                            <label control-label" for="inputDefault"><b>Comment:</b></label>
+                        </div>
+                        <div class="col-md-5">
+                            <textarea class="form-control" rows="3" id="new_comment"></textarea>
+                        </div>
+                        <div class="col-md-1" style="padding-top:20px">
+                            <button type="button" id="submitt" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-body" id="comment">
+
+                </div>
+
+            </section>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        //Update Project list
+        $("#btn_update").click(function () {
+            SaveAndUpdate($("#btn_update").val());
+        })
+        //Update Project Request Accept
+        $("#btn_accept").click(function () {
+            UpdateProjectRequest("Accepted");
+        })
+        //Update Project Request Completed
+        $("#btn_completed").click(function () {
+            UpdateProjectRequest("Completed");
+        })
+        //Reject Project Request Rejected
+        $("#btn_reject").click(function () {
+            UpdateProjectRequest("Rejected");
+        })
+
+        //Save Comment
+        $("#submitt").click(function () {
+            document.getElementById("load").style.display = "block";
+            var groupId = $("#gp_id").val();
+            var comment = $("#new_comment").val();
+            debugger
+            var supportName = $("#userName").text();
+            if (groupId > 0 & comment != '') {
+                $.ajax({
+                    type: "POST",
+                    url: '/MyProject/NewComment',
+                    method: 'post',
+                    data: {
+                        grpId: groupId,
+                        comment: comment,
+                        supportName: supportName
+                    },
+                    success: function (data) {
+                        LoadComments(groupId);
+                        $("#new_comment").val(null)
+                        Swal.fire(
+                            'Saved!',
+                            'Comment has been Made.',
+                            'success'
+                        )
+                    },
+                    error: function (err) {
+                        Swal.fire(
+                            'Failed.!',
+                            '' + err,
+                            'error'
+                        )
+                    }
+                });
+            }
+            else {
+                Swal.fire(
+                    'Failed.!',
+                    'Please Fill With Valid Data.!',
+                    'error'
+                )
+            }
+            document.getElementById("load").style.display = "none";
+        })
+
+    });
+    function ProjectList(id) {
+        $("#projectDetails").hide();
+        $("#groupInstruction").hide();
+        $("#requestList").slideDown();
+        $("#grp_id").val(id);
+        LoadProjects(id);
+    }
+    function ProjectDetails(id) {
+        $("#groupInstruction").hide();
+        $("#projectDetails").slideDown();
+        GetById(id);
+    }
+
+    //Save And Update Project
+    function SaveAndUpdate(btnVal) {
+
+        document.getElementById("load").style.display = "block";
+        var pId = $("#p_id").val();
+        var projectTitle = $("#p_title").val();
+        var projectKnowlwdge = $("#p_knowledge").val(); 
+        var shortDes = $("#s_description").val();
+        var version = $("#version").val()
+        var plartform = $("#plartform").val();
+        //$("#offered_by").val();
+        var offerStatus = $("#offer_status").val();
+        var userId = $("#user_id").val();
+
+        if (projectTitle != '' & projectKnowlwdge != '' & shortDes != '' & version != '' & plartform != ''  & offerStatus != '') {
+            $.ajax({
+                type: "POST",
+                url: '/ProjectList/Index',
+                method: 'post',
+                data: {
+                    Id: pId,
+                    ProjectTite: projectTitle,
+                    PrerequisiteKnowledge: projectKnowlwdge,
+                    ShortDescription: shortDes,
+                    Version: version,
+                    TblUserInfoId: userId,
+                    Plartform: plartform,
+                    OfferedStatus: offerStatus,
+                    submitButton: btnVal
+                },
+                success: function (data) {
+
+                    Swal.fire(
+                        'Saved!',
+                        'Project has been Saved.',
+                        'success'
+                    )
+
+                    $("#p_title").val(null);
+                    $("#p_knowledge").val(null);
+                    $("#s_description").val(null);
+                    $("#version").val(null)
+
+                    $("#plartform").val(null);
+                    //$("#offered_by").val(null);
+                    $("#offer_status").val(null);
+                    //$("#user_id").val(null);
+
+                    $("#createProject").hide();
+                    debugger
+                    // LoadProjects("", userId);
+                    LoadProjects($("#grp_id").val());
+
+                    $("#offer_status_DD").val(offerStatus);
+                },
+                error: function (err) {
+                    Swal.fire(
+                        'Failed.!',
+                        '' + err,
+                        'error'
+                    )
+                }
+            });
+        }
+        else {
+            Swal.fire(
+                'Failed.!',
+                'Please Fill With Valid Data.!',
+                'error'
+            )
+            LoadProjects($("#grp_id").val());
+            $("#offer_status_DD").val("")
+        }
+        document.getElementById("load").style.display = "none";
+    }
+    //Load ProjectList
+    function LoadProjects(id) {
+        document.getElementById("load").style.display = "block";
+        $("#comment_panel").hide();
+        var str = "";
+        var i = 1;
+        $.ajax({
+            type: "POST",
+            url: '/ProjectRequest/GetProjectList',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                groupId: id
+            },
+            success: function (data) {
+                $("#tblProject").empty();
+
+                str += '<thead> <tr> <th>#</th> <th>Project Title</th><th>Status</th><th>Action</th> </tr></thead >';
+                $.each(data, function (index, row) {
+
+                    str += '<tbody>' + '<tr> ' + ' <td>' + i++ + '</td>' + ' <td>' + row.ProjectTite + '</td>' + ' <td>' + row.Status + '</td>' + ' <td align="center">' + ' <a onclick="ProjectDetails(' + row.Id + ')" title="View" id="p_view"><i class="fas fa-eye"></i></a>' +
+                            '</td>' + '</tr>' + '</tbody > ';
+                });
+                $("#tblProject").append(str);
+
+                $("#projectDetails").hide();
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+    //Edit Project
+    function GetById(id) {
+        document.getElementById("load").style.display = "block";
+        //document.getElementById("create").style.display = "none";
+        //document.getElementById("update").style.display = "block";
+        $("#title").empty();
+        document.getElementById("title").innerHTML += "Update Project";
+        $("#comment_panel").hide();
+        $.ajax({
+            type: "POST",
+            url: '/ProjectList/GetById',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            success: function (data) {
+                $("#p_title").val(data.ProjectTite);
+                $("#p_knowledge").val(data.PrerequisiteKnowledge);
+                $("#s_description").val(data.ShortDescription);
+                $("#version").val(data.Version);
+
+                $("#plartform").val(data.Plartform);
+                $("#offer_status").val(data.OfferedStatus);
+                //$("#user_id").val(data.TblUserInfoId);
+                $("#p_id").val(data.Id);
+                $("#createProject").slideDown();
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+
+    //Change Project Request
+    function UpdateProjectRequest(btnVal) {
+
+        document.getElementById("load").style.display = "block";
+        var projectGrpId = $("#grp_id").val();
+        var projectListId = $("#p_id").val();
+        $.ajax({
+            type: "POST",
+            url: '/ProjectRequest/UpdateRequest',
+            method: 'post',
+            data: {
+                status: btnVal,
+                projectListId: projectListId,
+                projectGrpId: projectGrpId,
+            },
+            success: function (data) {
+
+                Swal.fire(
+                    btnVal+'!',
+                    'Successful.',
+                    'success'
+                )
+                LoadProjects(projectGrpId);
+            },
+            error: function (err) {
+                Swal.fire(
+                    'Failed.!',
+                    '' + err,
+                    'error'
+                )
+            }
+        });
+        document.getElementById("load").style.display = "none";
+
+    }
+
+    //Load Comments
+    function LoadComments(grpId) {
+        debugger
+        document.getElementById("load").style.display = "block";
+        $("#gp_id").val(grpId);
+        $("#comment_panel").slideDown();
+        var str = "";
+        $.ajax({
+            type: "POST",
+            url: '/ProjectRequest/GetComments',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                groupId: grpId
+            },
+            success: function (data) {
+                $("#comment").empty();
+                $.each(data, function (index, row) {
+
+                    str += '<div class="col-md-12"><label><b >' + row.GroupName + ': &nbsp; </b></label> <label style="padding-right:100px">' + row.Comment + '</label></div> <br />'
+                });
+                $("#comment").append(str);
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+</script>

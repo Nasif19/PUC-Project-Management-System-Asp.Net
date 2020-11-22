@@ -1,0 +1,407 @@
+﻿@using PUC_PMS.Models
+@model PUC_PMS.Models.ProjectList
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!--For ProjectGroup-->
+<section role="main" class="content-body" style="margin:-40px; margin-top:-80px">
+    <header class="page-header">
+        <h2>Manage Project</h2>
+
+        <div class="right-wrapper pull-right">
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="@Url.Action("Index","ProjectGroup")">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Forms</span></li>
+                <li><span>Basic</span></li>
+            </ol>
+
+            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    <!-- start: page -->
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="panel" id="createProject" style="display:none">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <h2 class="panel-title" id="title"></h2>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered" id="saveProject">
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputDefault">Id</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="p_id" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Project Title</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="p_title">
+                            </div>
+                        </div>
+
+                        <!--Suggetion List -->
+                        <datalist id="datalist1">
+                            <option value="HTML,CSS,PHP,MySQL">
+                            <option value="HTML,CSS,PHP,Laravel,MySQL">
+                            <option value="HTML,CSS,,ASP.NET,MMSSQL">
+                                @*<option value="Laravel">
+                <option value="MSSQL">
+                <option value="MySQL">*@
+                        </datalist>
+                        <!--End-->
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Prerequisite Knowlede</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="p_knowledge" list="datalist1">
+                            </div>
+                        </div>
+                        <!--Description-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="textareaAutosize">Short Description</label>
+                            <div class="col-md-5">
+                                <textarea class="form-control" rows="5" id="s_description" @*data-plugin-textarea-autosize*@></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Version</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="version">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Plartform</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="plartform" autocomplete="on">
+                            </div>
+                        </div>
+
+                        @*<div class="form-group" style="display:none">
+            <label class="col-md-3 control-label" for="textareaAutosize">Offered By</label>
+            <div class="col-md-9">
+                <input class="form-control" id="offered_by" data-plugin-textarea-autosize value="Teacher" readonly="readonly">
+            </div>
+        </div>*@
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Offer Status</label>
+                            <div class="col-md-5">
+                                @Html.DropDownListFor(d => d.OfferedBy, new SelectList(ViewBag.OfferedByList, "Value", "Text"), "--Select--", new { @class = "form-control populate", @id = "offer_status" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.OfferedBy)
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-md-3 control-label" for="inputDefault">User Id</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="user_id" , readonly="readonly" value="@ViewBag.UserId">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5" align="center">
+                                <input type="button" id="create" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Save" style="display:none">
+                                <input type="button" id="update" name="submitButton" class="btn-lg mb-xs mt-xs mr-xs btn btn-primary" value="Update" style="display:none">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <hr class="separator" />
+            </section>
+
+            <!--Project Table-->
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+
+                    <label class="panel-title col-sm-10">Project List</label>
+                    <button type="button" onclick="CreateProject()" class="btn btn-primary" style="margin-left:40px" id="CreateProject">Create Project</button>
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-bordered">
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="inputDefault">Offer Status</label>
+                            <div class="col-md-4" style="margin-bottom:-50px">
+                                @Html.DropDownListFor(d => d.OfferedBy, new SelectList(ViewBag.OfferedByList, "Value", "Text"), "ALL", new { @class = "form-control populate", @id = "offer_status_DD" })
+                                <br />
+                                @Html.ValidationMessageFor(v => v.OfferedBy)
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped mb-none" id="tblProject" data-swf-path="assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                    <thead>
+                                        <tr>
+                                            <th>Project Title</th>
+                                            <th>Offered By</th>
+                                            <th>Plartform</th>
+                                            <th>Offer Status</th>
+                                            <th>Prerequisite Knowledge</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (ProjectList projectList in ViewBag.ProjectList)
+                                        {
+                                            <tr class="gradeC">
+                                                <td>@projectList.ProjectTite</td>
+                                                <td>@projectList.OfferedBy</td>
+                                                <td>@projectList.Plartform</td>
+                                                <td>@projectList.OfferedStatus</td>
+                                                <td>@projectList.PrerequisiteKnowledge</td>
+                                                <td class="center hidden-phone">
+                                                    <a title="Edit" id="p_edit" onclick="GetById(@projectList.Id)"> <i class="fas fa-edit"></i></a> &nbsp;
+                                                    <a title="Delete" id="p_delete" onclick="RemoveProjct(@projectList.Id)"> <i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- end: page -->
+</section>
+
+
+<script>
+    $(document).ready(function () {
+
+        //Save Project list
+        $("#create").click(function () {
+            SaveAndUpdate($("#create").val());
+        })
+
+        //Update Project list
+        $("#update").click(function () {
+            SaveAndUpdate($("#update").val());
+        })
+
+        //Load Table By OfferStatus
+        $("#offer_status_DD").change(function () {
+            LoadProjects($("#offer_status_DD").val())
+        })
+
+
+    });
+
+    //Save And Update Project
+    function SaveAndUpdate(btnVal) {
+
+        document.getElementById("load").style.display = "block";
+        var pId = $("#p_id").val();
+        var projectTitle = $("#p_title").val();
+        var projectKnowlwdge = $("#p_knowledge").val(); //$("#p_knowledge").tagsinput('items');
+        var shortDes = $("#s_description").val();
+        var version = $("#version").val()
+        var plartform = $("#plartform").val();
+        var offeredBy = "Teacher";
+        //$("#offered_by").val();
+        var offerStatus = $("#offer_status").val();
+        var userId = $("#user_id").val();
+
+        if (projectTitle != '' & projectKnowlwdge != '' & shortDes != '' & version != '' & plartform != '' & offeredBy != '' & offerStatus != '') {
+            $.ajax({
+                type: "POST",
+                url: '/ProjectList/Index',
+                method: 'post',
+                data: {
+                    Id: pId,
+                    ProjectTite: projectTitle,
+                    PrerequisiteKnowledge: projectKnowlwdge,
+                    ShortDescription: shortDes,
+                    Version: version,
+                    TblUserInfoId: userId,
+                    OfferedBy: offeredBy,
+                    Plartform: plartform,
+                    OfferedStatus: offerStatus,
+                    submitButton: btnVal
+                },
+                success: function (data) {
+
+                    Swal.fire(
+                        'Saved!',
+                        'Project has been Saved.',
+                        'success'
+                    )
+
+                    $("#p_title").val(null);
+                    $("#p_knowledge").val(null);
+                    $("#s_description").val(null);
+                    $("#version").val(null)
+
+                    $("#plartform").val(null);
+                    //$("#offered_by").val(null);
+                    $("#offer_status").val(null);
+                    //$("#user_id").val(null);
+
+                    $("#createProject").hide();
+
+                    // LoadProjects("", userId);
+                    LoadProjects(offerStatus);
+
+                    $("#offer_status_DD").val(offerStatus);
+                },
+                error: function (err) {
+                    Swal.fire(
+                        'Failed.!',
+                        '' + err,
+                        'error'
+                    )
+                }
+            });
+        }
+        else {
+            Swal.fire(
+                'Failed.!',
+                'Please Fill With Valid Data.!',
+                'error'
+            )
+            LoadProjects('');
+            $("#offer_status_DD").val("")
+        }
+        document.getElementById("load").style.display = "none";
+    }
+    //Load ProjectList
+    function LoadProjects(offerStatus) {
+        document.getElementById("load").style.display = "block";
+        var str = "";
+        var userId = $("#user_id").val();
+        $.ajax({
+            type: "POST",
+            url: '/ProjectList/GetProjectList',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                offerStatus: offerStatus,
+                userId: userId
+            },
+            success: function (data) {
+                $("#tblProject").empty();
+
+                str += '<thead> <tr> <th>Project Title</th><th>Offered By</th> <th>Plartform</th><th>Offer Status</th> <th>Prerequisite Knowledge</th> <th>Action</th> </tr></thead >';
+                $.each(data, function (index, row) {
+
+                    str += '<tbody>' + '<tr> ' + ' <td>' + row.ProjectTite + '</td>' + '<td>' + row.OfferedBy + '</td> ' + ' <td>' + row.Plartform + '</td> ' + ' <td>' + row.OfferedStatus + '</td>' + ' <td>' + row.PrerequisiteKnowledge + '</td>' +
+                        ' <td>' + '<a title="Edit" id="p_edit" onclick="GetById(' + row.Id + ')">  <i class="fas fa-edit"></i></a>' + '&nbsp;' +
+                        '<a title = "Delete" id="p_delete" onclick="RemoveProjct(' + row.Id + ')"> <i class="fas fa-trash-alt"></i> </a>' + '</td>' + '</tr>' + '</tbody > ';
+                });
+                $("#tblProject").append(str);
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+    //Edit Project
+    function GetById(id) {
+        document.getElementById("load").style.display = "block";
+        document.getElementById("create").style.display = "none";
+        document.getElementById("update").style.display = "block";
+        $("#title").empty();
+        document.getElementById("title").innerHTML += "Update Project";
+
+        $.ajax({
+            type: "POST",
+            url: '/ProjectList/GetById',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            success: function (data) {
+                $("#p_title").val(data.ProjectTite);
+                $("#p_knowledge").val(data.PrerequisiteKnowledge);
+                $("#s_description").val(data.ShortDescription);
+                $("#version").val(data.Version);
+
+                $("#plartform").val(data.Plartform);
+                $("#offer_status").val(data.OfferedStatus);
+                //$("#user_id").val(data.TblUserInfoId);
+                $("#p_id").val(data.Id);
+                $("#createProject").slideDown();
+            }
+        });
+        document.getElementById("load").style.display = "none";
+    }
+    //Delete Project
+    function RemoveProjct(id) {
+        document.getElementById("load").style.display = "block";
+        Swal.fire({
+
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: '/ProjectList/Index',
+                    method: 'post',
+                    data: {
+                        Id: id,
+                        submitButton: "delete"
+                    },
+                    success: function (data) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Project has been deleted.',
+                            'success'
+                        )
+
+                        LoadProjects($("#offer_status_DD").val())
+
+                    }
+                });
+
+            }
+        })
+        document.getElementById("load").style.display = "none";
+    }
+    function CreateProject() {
+        document.getElementById("load").style.display = "block";
+        $("#createProject").slideDown();
+
+        $("#p_title").val(null);
+        $("#p_knowledge").val(null);
+        $("#s_description").val(null);
+        $("#version").val(null)
+
+        $("#plartform").val(null);
+        $("#p_id").val(0);
+        $("#offer_status").val(null);
+        //$("#user_id").val(null);
+        document.getElementById("create").style.display = "block";
+        document.getElementById("update").style.display = "none";
+        $("#title").empty();
+        document.getElementById("title").innerHTML += "Save Project";
+        document.getElementById("load").style.display = "none";
+    }
+    //$("#offer_status_DD").val("Teacher");
+
+</script>
